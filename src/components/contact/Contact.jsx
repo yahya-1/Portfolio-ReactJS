@@ -1,20 +1,55 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./contact.css"
 
 const Contact = () => {
     const form = useRef();
 
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [project, setProject] = useState("")
+
     const sendEmail = (e) => {
         e.preventDefault();
 
+        if (name === "") {
+            notify("Enter the name", "warn")
+            return
+        }
+        if (email === "") {
+            notify("Enter the email", "warn")
+            return
+        }
+        if (project === "") {
+            notify("Enter the project", "warn")
+            return
+        }
         emailjs.sendForm(
             'service_ptzx8ag',
             'template_1ii98ia',
             form.current,
-            'YrUjnNGKBtjp7K1AD')
-        e.target.reset()
+            'YrUjnNGKBtjp7K1AD').then((result) => {
+                setName("")
+                setEmail("")
+                setProject("")
+                notify("Email has been sent", "success")
+            }, (error) => {
+                notify(error.text, "error")
+            });
+
     };
+
+    const notify = (mes, type) => {
+        if (type === "success") {
+            toast.success(mes);
+        } else if (type === "error") {
+            toast.error(mes);
+        } else if (type === "warn") {
+            toast.warn(mes)
+        }
+    }
 
     return (
         <section className='contact section' id='contact'>
@@ -65,6 +100,8 @@ const Contact = () => {
                         <div className='contact__form-div'>
                             <label className='contact__form-tag'>Name</label>
                             <input
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                                 type="text"
                                 name="name"
                                 className='contact__form-input'
@@ -75,6 +112,8 @@ const Contact = () => {
                         <div className='contact__form-div'>
                             <label className='contact__form-tag'>Mail</label>
                             <input
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 type="email"
                                 name="email"
                                 className='contact__form-input'
@@ -85,7 +124,10 @@ const Contact = () => {
 
                         <div className='contact__form-div contact__form-area'>
                             <label className='contact__form-tag'>Project</label>
-                            <textarea name='project' cols="30" rows="10"
+                            <textarea
+                                value={project}
+                                onChange={(e) => setProject(e.target.value)}
+                                name='project' cols="30" rows="10"
                                 className='contact__form-input'
                                 placeholder='Write your project'></textarea>
                         </div>
@@ -114,6 +156,7 @@ const Contact = () => {
                     </form>
                 </div>
             </div>
+            <ToastContainer theme="colored" />
         </section>
     )
 }
