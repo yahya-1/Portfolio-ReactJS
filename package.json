@@ -1,9 +1,10 @@
 {
   "name": "protfolio",
   "version": "0.1.0",
-  "homepage":"http://yahya-1.github.io/Portfolio-ReactJS",
+  "homepage": "http://yahya-1.github.io/Portfolio-ReactJS",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^3.7.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
